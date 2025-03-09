@@ -11,16 +11,25 @@ class WorldState {
   final int width;
   final int height;
 
+  //SETTING THE CELL STATE TO ALIVE
+  void setAll(CellState state) {
+    for (var x = 0; x < width; x++) {
+      for (var y = 0; y < height; y++) {
+        setDimensions(x, y, state);
+      }
+    }
+  }
+
   CellState getDimensions(int x, int y) {
     if (x < 0 || y < 0 || x >= width || y >= height) {
-      return CellState.dead;  
+      return CellState.dead;
     }
     return CellState.values[_data[x + width * y]];
   }
 
   void setDimensions(int x, int y, CellState value) {
-     if (x < 0 || y < 0 || x >= width || y >= height) {
-      return;  
+    if (x < 0 || y < 0 || x >= width || y >= height) {
+      return;
     }
     _data[x + width * y] = value.index;
   }
