@@ -8,6 +8,40 @@ class WorldState {
   WorldState(this.height, this.width) {
     _data = Uint8List(width * height);
   }
+
+  //FACTORY CONSTRUCTOR
+  factory WorldState.fromString(String pickle) {
+    if (pickle.isEmpty) {
+      return WorldState(0, 0);
+    }
+    final lines = pickle.split('\n');
+    if (lines.length <= 1 || lines.last.isNotEmpty) {
+      throw ArgumentError(
+        'Each line in pattern is terminated using new line',
+      );
+    }
+    final height = lines.length - 1;
+    final width = lines[0].length;
+    final world = WorldState(height, width);
+    for (var y = 0; y < height; ++y) {
+      if (lines[y].length != width) {
+        throw ArgumentError('Each line in pattern must be same length');
+      }
+      for (var x = 0; x < width; ++x) {
+        final ch = lines[y][x];
+        switch (ch) {
+          case 'x':
+            world.setDimensions(x, y, CellState.alive);
+          case '.':
+            //CELLS - DEFAULT TO DEAD IN A NEWLY CREATED WORLD
+            break;
+          default:
+            throw ArgumentError('Inavlis character');
+        }
+      }
+    }
+    return world;
+  }
   late Uint8List _data;
 
   final int width;
@@ -66,6 +100,23 @@ class WorldState {
       }
     });
     return count;
+  }
+
+  @override
+  String toString() {
+    final buffer = StringBuffer();
+    for (var y = 0; y < height; y++) {
+      for (var x = 0; x < width; x++) {
+        switch (getDimensions(x, y)) {
+          case CellState.dead:
+            buffer.write('.');
+          case CellState.alive:
+            buffer.write('x');
+        }
+      }
+      buffer.write('\n');
+    }
+    return buffer.toString();
   }
 }
 
