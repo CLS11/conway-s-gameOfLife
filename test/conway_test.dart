@@ -82,4 +82,104 @@ void main() {
     expect(world.countAlive(), 4);
     expect(newWorld.countAlive(), 4);
   });
+
+  test('toString empty world', () {
+    final world = WorldState(0, 0);
+    expect(world.width, 0);
+    expect(world.height, 0);
+    expect(world.countAlive(), 0);
+    expect(world.toString(), '');
+    final reconstructed = WorldState.fromString(world.toString());
+    expect(reconstructed.width, 0);
+    expect(reconstructed.height, 0);
+    expect(reconstructed.countAlive(), 0);
+  });
+
+  test('toString empty 0x5', () {
+    final world = WorldState(0, 5);
+    expect(world.width, 0);
+    expect(world.height, 5);
+    expect(world.countAlive(), 0);
+    expect(world.toString(), '\n\n\n\n\n');
+    final reconstructed = WorldState.fromString(world.toString());
+    expect(reconstructed.width, 0);
+    expect(reconstructed.height, 5);
+    expect(reconstructed.countAlive(), 0);
+  });
+
+  test('toString empty 5x0', () {
+    final world = WorldState(5, 0);
+    expect(world.width, 5);
+    expect(world.height, 0);
+    expect(world.countAlive(), 0);
+    expect(world.toString(), '');
+    final reconstructed = WorldState.fromString(world.toString());
+    expect(reconstructed.width, 0);
+    expect(reconstructed.height, 0);
+    expect(reconstructed.countAlive(), 0);
+  });
+
+  test('toString', () {
+    final world = WorldState(4, 5);
+    expect(world.countAlive(), 0);
+    world
+      ..setDimensions(1, 1, CellState.alive)
+      ..setDimensions(1, 2, CellState.alive)
+      ..setDimensions(2, 1, CellState.alive)
+      ..setDimensions(2, 2, CellState.alive)
+      ..setDimensions(2, 3, CellState.alive);
+    expect(world.countAlive(), 5);
+    expect(world.toString(), '''
+        ....
+        .xx.
+        .xx.
+        ..x.
+        ....
+    ''');
+  });
+
+  test('fromString empty', () {
+    final world = WorldState.fromString('');
+    expect(world.width, 0);
+    expect(world.height, 0);
+    expect(world.countAlive(), 0);
+  });
+
+  test('fromString', () {
+    final world = WorldState.fromString('''
+    ....
+    .xx.
+    .xx.
+    ..x.
+    ....
+    ''',
+  );
+    expect(world.width, 4);
+    expect(world.height, 5);
+    expect(world.countAlive(), 5);
+    expect(world.getDimensions(1, 1), CellState.alive);
+    expect(world.getDimensions(1, 2), CellState.alive);
+    expect(world.getDimensions(2, 1), CellState.alive);
+    expect(world.getDimensions(2, 2), CellState.alive);
+    expect(world.getDimensions(2, 3), CellState.alive);
+  });
+
+  test('fromString invalid', () {
+    expect(() {
+      WorldState.fromString('x');
+    }, throwsArgumentError,
+    );
+    expect(() {
+      WorldState.fromString('x\nx');
+    }, throwsArgumentError,
+    );
+    expect(() {
+      WorldState.fromString('x\nxx\n');
+    }, throwsArgumentError,
+    );
+    expect(() {
+      WorldState.fromString('xy\nxx\n');
+      }, throwsArgumentError,
+    );
+  });
 }
