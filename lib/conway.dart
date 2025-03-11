@@ -71,8 +71,8 @@ class WorldState {
   }
 
   void forEach(WorldStateCallback callback) {
-    for (var x = 0; x < width; ++x) {
-      for (var y = 0; y < height; ++y) {}
+    for (var x = 0; x < height; ++x) {
+      for (var y = 0; y < width; ++y) {}
     }
   }
 
