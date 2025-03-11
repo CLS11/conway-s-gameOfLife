@@ -16,9 +16,7 @@ class WorldState {
     }
     final lines = pickle.split('\n');
     if (lines.length <= 1 || lines.last.isNotEmpty) {
-      throw ArgumentError(
-        'Each line in pattern is terminated using new line',
-      );
+      throw ArgumentError('Each line in pattern is terminated using new line');
     }
     final height = lines.length - 1;
     final width = lines[0].length;
@@ -72,7 +70,9 @@ class WorldState {
 
   void forEach(WorldStateCallback callback) {
     for (var x = 0; x < height; ++x) {
-      for (var y = 0; y < width; ++y) {}
+      for (var y = 0; y < width; ++y) {
+        callback(x, y, getDimensions(x, y));
+      }
     }
   }
 
@@ -128,15 +128,15 @@ WorldState? next(WorldState oldWorld) {
     //UNDERPOPULATION CONDITION: FEWER NEIGHBOURS THAN 2 LIVE CELL
     //=> LIVE CELL DIES
     if (value == CellState.alive) {
-      if (aliveNeighbor >= 2) {
+      if (aliveNeighbor == 2 || aliveNeighbor == 3) {
         newWorld.setDimensions(x, y, CellState.alive);
       }
     } else {
       //DEAD CELL => ALIVE WHEN 3 NEIGHBOURS ARE ALIVE
-      if (aliveNeighbor >= 3) {
+      if (aliveNeighbor == 3) {
         newWorld.setDimensions(x, y, CellState.alive);
       }
     }
   });
-  return null;
+  return newWorld;
 }
