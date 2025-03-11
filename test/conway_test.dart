@@ -59,6 +59,21 @@ void main() {
     expect(world.countAlive(), 1);
   });
 
+  test('forEach control', () {
+    final world = WorldState(3, 7);
+    expect(world.width, 3);
+    expect(world.height, 7);
+    expect(world.countAlive(), 0);
+    world.setAll(CellState.alive);
+    expect(world.countAlive(), 3 * 7);
+    var count = 0;
+    world.forEach((x, y, value) {
+      ++count;
+      expect(value, CellState.alive);
+    });
+    expect(count, 3 * 7);
+  });
+
   test('One cell dies', () {
     final world = WorldState(4, 4);
     expect(world.countAlive(), 0);
@@ -152,8 +167,7 @@ void main() {
     .xx.
     ..x.
     ....
-    ''',
-  );
+    ''');
     expect(world.width, 4);
     expect(world.height, 5);
     expect(world.countAlive(), 5);
@@ -179,7 +193,7 @@ void main() {
     );
     expect(() {
       WorldState.fromString('xy\nxx\n');
-      }, throwsArgumentError,
+    }, throwsArgumentError,
     );
   });
 }
