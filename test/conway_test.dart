@@ -98,6 +98,46 @@ void main() {
     expect(newWorld.countAlive(), 4);
   });
 
+  test('Blinker blinks', () {
+    var world = WorldState.fromString('''
+      .....
+      ..x..
+      ..x..
+      ..x..
+      .....
+      ''');
+    world = next(world)!;
+    expect(world.toString(), 
+    '''
+    .....
+    .....
+    .xxx.
+    .....
+    .....
+    '''
+    );
+  });
+
+   test('Beacon beckons', () {
+    var world = WorldState.fromString('''
+    ......
+    .xx...
+    .xx...
+    ...xx.
+    ...xx.
+    ......
+    ''');
+    world = next(world)!;
+    expect(world.toString(), '''
+    ......
+    .xx...
+    .x....
+    ....x.
+    ...xx.
+    ......
+    ''');
+  });
+
   test('toString empty world', () {
     final world = WorldState(0, 0);
     expect(world.width, 0);
@@ -181,19 +221,15 @@ void main() {
   test('fromString invalid', () {
     expect(() {
       WorldState.fromString('x');
-    }, throwsArgumentError,
-    );
+    }, throwsArgumentError);
     expect(() {
       WorldState.fromString('x\nx');
-    }, throwsArgumentError,
-    );
+    }, throwsArgumentError);
     expect(() {
       WorldState.fromString('x\nxx\n');
-    }, throwsArgumentError,
-    );
+    }, throwsArgumentError);
     expect(() {
       WorldState.fromString('xy\nxx\n');
-    }, throwsArgumentError,
-    );
+    }, throwsArgumentError);
   });
 }
