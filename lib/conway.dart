@@ -30,11 +30,12 @@ class WorldState {
         switch (ch) {
           case 'x':
             world.setDimensions(x, y, CellState.alive);
+            break;
           case '.':
             //CELLS - DEFAULT TO DEAD IN A NEWLY CREATED WORLD
             break;
           default:
-            throw ArgumentError('Inavlis character');
+            throw ArgumentError('Inavlid character');
         }
       }
     }
@@ -69,8 +70,8 @@ class WorldState {
   }
 
   void forEach(WorldStateCallback callback) {
-    for (var x = 0; x < height; ++x) {
-      for (var y = 0; y < width; ++y) {
+    for (var y = 0; y < height; ++y) {
+      for (var x = 0; x < width; ++x) {
         callback(x, y, getDimensions(x, y));
       }
     }
@@ -110,8 +111,10 @@ class WorldState {
         switch (getDimensions(x, y)) {
           case CellState.dead:
             buffer.write('.');
+            break;
           case CellState.alive:
             buffer.write('x');
+            break;
         }
       }
       buffer.write('\n');
@@ -121,7 +124,7 @@ class WorldState {
 }
 
 WorldState? next(WorldState oldWorld) {
-  final newWorld = WorldState(oldWorld.width, oldWorld.height);
+  final newWorld = WorldState(oldWorld.height, oldWorld.width);
 
   oldWorld.forEach((int x, int y, CellState value) {
     final aliveNeighbor = oldWorld.countAliveNeighbors(x, y);
