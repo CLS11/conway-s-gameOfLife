@@ -10,7 +10,7 @@ class WorldState {
   }
 
   //FACTORY CONSTRUCTOR
-  factory WorldState.fromString(String pickle) {
+  factory WorldState.fromFixture(String pickle) {
     if (pickle.isEmpty) {
       return WorldState(0, 0);
     }
@@ -104,7 +104,7 @@ class WorldState {
   }
 
   @override
-  String toString() {
+  String toFixture() {
     final buffer = StringBuffer();
     for (var y = 0; y < height; y++) {
       for (var x = 0; x < width; x++) {
