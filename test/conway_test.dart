@@ -1,4 +1,5 @@
 import 'package:conway/conway.dart';
+import 'package:conway/my_matcher.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -85,55 +86,120 @@ void main() {
   });
 
   test('Block endures', () {
-    final world = WorldState(4, 4);
-    expect(world.countAlive(), 0);
-    world
-      ..setDimensions(1, 1, CellState.alive)
-      ..setDimensions(1, 2, CellState.alive)
-      ..setDimensions(2, 1, CellState.alive)
-      ..setDimensions(2, 2, CellState.alive);
-    expect(world.countAlive(), 4);
-    final newWorld = next(world)!;
-    expect(world.countAlive(), 4);
-    expect(newWorld.countAlive(), 4);
+    String block = '''
+....
+.xx.
+.xx.
+....
+''';
+    expect(block, endures);
+  });
+
+  test('Beehive endures', () {
+    String beehive = '''
+......
+..xx..
+.x..x.
+..xx..
+......
+''';
+    expect(beehive, endures);
+  });
+
+  test('Boat endures', () {
+    String boat = '''
+.....
+.xx..
+.x.x.
+..x..
+.....
+''';
+    expect(boat, endures);
+  });
+
+  test('Loaf endures', () {
+    String loaf = '''
+......
+..xx..
+.x..x.
+..x.x.
+...x..
+......
+''';
+    expect(loaf, endures);
+  });
+
+  test('Tub endures', () {
+    String tub = '''
+.....
+..x..
+.x.x.
+..x..
+.....
+''';
+    expect(tub, endures);
   });
 
   test('Blinker blinks', () {
-    var world = WorldState.fromFixture('''
-      .....
-      ..x..
-      ..x..
-      ..x..
-      .....
-      ''');
-    world = next(world)!;
-    expect(world.toFixture(), '''
-    .....
-    .....
-    .xxx.
-    .....
-    .....
-    ''');
+    String one = '''
+.....
+..x..
+..x..
+..x..
+.....
+''';
+    String two = '''
+.....
+.....
+.xxx.
+.....
+.....
+''';
+    expect(one, evolvesTo(two));
+    expect(two, evolvesTo(one));
   });
 
+  test('Toad jumps', () {
+    String one = '''
+......
+......
+..xxx.
+.xxx..
+......
+......
+''';
+    String two = '''
+......
+...x..
+.x..x.
+.x..x.
+..x...
+......
+''';
+    expect(one, evolvesTo(two));
+    expect(two, evolvesTo(one));
+  });
+
+
   test('Beacon beckons', () {
-    var world = WorldState.fromFixture('''
-    ......
-    .xx...
-    .xx...
-    ...xx.
-    ...xx.
-    ......
-    ''');
-    world = next(world)!;
-    expect(world.toFixture(), '''
-    ......
-    .xx...
-    .x....
-    ....x.
-    ...xx.
-    ......
-    ''');
+    String one = '''
+......
+.xx...
+.xx...
+...xx.
+...xx.
+......
+''';
+    String two =  '''
+......
+.xx...
+.x....
+....x.
+...xx.
+......
+''';
+    expect(one, evolvesTo(two));
+    expect(two, evolvesTo(one));
   });
 
   test('toFixture empty world', () {
