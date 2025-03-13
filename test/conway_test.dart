@@ -99,7 +99,7 @@ void main() {
   });
 
   test('Blinker blinks', () {
-    var world = WorldState.fromString('''
+    var world = WorldState.fromFixture('''
       .....
       ..x..
       ..x..
@@ -107,19 +107,17 @@ void main() {
       .....
       ''');
     world = next(world)!;
-    expect(world.toString(), 
-    '''
+    expect(world.toFixture(), '''
     .....
     .....
     .xxx.
     .....
     .....
-    '''
-    );
+    ''');
   });
 
-   test('Beacon beckons', () {
-    var world = WorldState.fromString('''
+  test('Beacon beckons', () {
+    var world = WorldState.fromFixture('''
     ......
     .xx...
     .xx...
@@ -128,7 +126,7 @@ void main() {
     ......
     ''');
     world = next(world)!;
-    expect(world.toString(), '''
+    expect(world.toFixture(), '''
     ......
     .xx...
     .x....
@@ -138,43 +136,43 @@ void main() {
     ''');
   });
 
-  test('toString empty world', () {
+  test('toFixture empty world', () {
     final world = WorldState(0, 0);
     expect(world.width, 0);
     expect(world.height, 0);
     expect(world.countAlive(), 0);
-    expect(world.toString(), '');
-    final reconstructed = WorldState.fromString(world.toString());
+    expect(world.toFixture(), '');
+    final reconstructed = WorldState.fromFixture(world.toFixture());
     expect(reconstructed.width, 0);
     expect(reconstructed.height, 0);
     expect(reconstructed.countAlive(), 0);
   });
 
-  test('toString empty 0x5', () {
+  test('toFixture empty 0x5', () {
     final world = WorldState(0, 5);
     expect(world.width, 0);
     expect(world.height, 5);
     expect(world.countAlive(), 0);
-    expect(world.toString(), '\n\n\n\n\n');
-    final reconstructed = WorldState.fromString(world.toString());
+    expect(world.toFixture(), '\n\n\n\n\n');
+    final reconstructed = WorldState.fromFixture(world.toFixture());
     expect(reconstructed.width, 0);
     expect(reconstructed.height, 5);
     expect(reconstructed.countAlive(), 0);
   });
 
-  test('toString empty 5x0', () {
+  test('toFixture empty 5x0', () {
     final world = WorldState(5, 0);
     expect(world.width, 5);
     expect(world.height, 0);
     expect(world.countAlive(), 0);
-    expect(world.toString(), '');
-    final reconstructed = WorldState.fromString(world.toString());
+    expect(world.toFixture(), '');
+    final reconstructed = WorldState.fromFixture(world.toFixture());
     expect(reconstructed.width, 0);
     expect(reconstructed.height, 0);
     expect(reconstructed.countAlive(), 0);
   });
 
-  test('toString', () {
+  test('toFixture', () {
     final world = WorldState(4, 5);
     expect(world.countAlive(), 0);
     world
@@ -184,7 +182,7 @@ void main() {
       ..setDimensions(2, 2, CellState.alive)
       ..setDimensions(2, 3, CellState.alive);
     expect(world.countAlive(), 5);
-    expect(world.toString(), '''
+    expect(world.toFixture(), '''
         ....
         .xx.
         .xx.
@@ -193,15 +191,15 @@ void main() {
     ''');
   });
 
-  test('fromString empty', () {
-    final world = WorldState.fromString('');
+  test('fromFixture empty', () {
+    final world = WorldState.fromFixture('');
     expect(world.width, 0);
     expect(world.height, 0);
     expect(world.countAlive(), 0);
   });
 
-  test('fromString', () {
-    final world = WorldState.fromString('''
+  test('fromFixture', () {
+    final world = WorldState.fromFixture('''
     ....
     .xx.
     .xx.
@@ -218,18 +216,18 @@ void main() {
     expect(world.getDimensions(2, 3), CellState.alive);
   });
 
-  test('fromString invalid', () {
+  test('fromFixture invalid', () {
     expect(() {
-      WorldState.fromString('x');
+      WorldState.fromFixture('x');
     }, throwsArgumentError);
     expect(() {
-      WorldState.fromString('x\nx');
+      WorldState.fromFixture('x\nx');
     }, throwsArgumentError);
     expect(() {
-      WorldState.fromString('x\nxx\n');
+      WorldState.fromFixture('x\nxx\n');
     }, throwsArgumentError);
     expect(() {
-      WorldState.fromString('xy\nxx\n');
+      WorldState.fromFixture('xy\nxx\n');
     }, throwsArgumentError);
   });
 }
