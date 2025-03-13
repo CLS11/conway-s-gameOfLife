@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    world = WorldState.fromString('''
+    world = WorldState.fromFixture('''
 ......
 .xx...
 .xx...
@@ -39,13 +39,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(title: Center(child: Text(widget.title))),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: ConwayGame(
-              world: world,
-            ),
-          ),
-        ],
+        children: [Expanded(child: ConwayGame(world: world))],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _increementWorld,
