@@ -121,6 +121,25 @@ class WorldState {
     }
     return buffer.toString();
   }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! WorldState) {
+      return false;
+    }
+    final typedOther = other;
+    if (width != typedOther.width || height != typedOther.height) {
+      return false;
+    }
+    for (var y = 0; y < height; ++y) {
+      for (var x = 0; x < width; ++x) {
+        if (getDimensions(x, y) != typedOther.getDimensions(x, y)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }
 
 WorldState? next(WorldState oldWorld) {
