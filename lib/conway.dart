@@ -1,10 +1,12 @@
 import 'dart:typed_data';
+import 'package:conway/cell_position.dart';
+import 'package:flutter/material.dart';
 
 enum CellState { dead, alive }
 
 typedef WorldStateCallback = Function(int x, int y, CellState value);
 
-class WorldState {
+class WorldState extends ChangeNotifier {
   WorldState(this.height, this.width) {
     _data = Uint8List(width * height);
   }
@@ -62,11 +64,30 @@ class WorldState {
     return CellState.values[_data[x + width * y]];
   }
 
+  CellState getPosition(CellPosition position) =>
+      getDimensions(position.x, position.y);
+
   void setDimensions(int x, int y, CellState value) {
     if (x < 0 || y < 0 || x >= width || y >= height) {
       return;
     }
     _data[x + width * y] = value.index;
+    notifyListeners();
+  }
+
+  void setPosition(CellPosition position, CellState value) {
+    setDimensions(position.x, position.y, value);
+  }
+
+  void toggle(CellPosition position) {
+    switch (getPosition(position)) {
+      case CellState.alive:
+        setPosition(position, CellState.dead);
+        break;
+      case CellState.dead:
+        setPosition(position, CellState.alive);
+        break;
+    }
   }
 
   void forEach(WorldStateCallback callback) {
