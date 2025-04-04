@@ -180,7 +180,6 @@ void main() {
     expect(two, evolvesTo(one));
   });
 
-
   test('Beacon beckons', () {
     String one = '''
 ......
@@ -190,7 +189,7 @@ void main() {
 ...xx.
 ......
 ''';
-    String two =  '''
+    String two = '''
 ......
 .xx...
 .x....
@@ -295,5 +294,19 @@ void main() {
     expect(() {
       WorldState.fromFixture('xy\nxx\n');
     }, throwsArgumentError);
+  });
+
+  test('fromRLE empty', () {
+    var world = WorldState.fromRLE(r'''
+#C This is glider.
+x = 3, y = 3
+bo$2bo$3o!
+''');
+    expect(world.toFixture(), '''
+x = 3, y = 2
+!
+''');
+    expect(world.width, 3);
+    expect(world.height, 2);
   });
 }
