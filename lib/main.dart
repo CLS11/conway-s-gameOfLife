@@ -13,7 +13,7 @@ class Conway extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(
-        title: 'H O M E    P A G E',
+        title: 'C O N W A Y\'S  G A M E  O F  L I F E',
       ),
     );
   }
